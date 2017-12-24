@@ -23,26 +23,6 @@ splituit = []
 
 @bot.event
 async def on_message(message):
-    '''if "+" in message.content:
-        msj = message.content.split()
-        rezultat = int(msj[0]) + int(msj[2])
-        await bot.send_message(message.channel, str(rezultat))
-    elif "-" in message.content:
-        msj = message.content.split()
-        rezultat = int(msj[0]) - int(msj[2])
-        await bot.send_message(message.channel, str(rezultat))
-    elif "*" in message.content:
-        msj = message.content.split()
-        rezultat = int(msj[0]) * int(msj[2])
-        await bot.send_message(message.channel, str(rezultat))
-    elif "/" in message.content or ":" in message.content:
-        msj = message.content.split()
-        rezultat = int(msj[0]) / int(msj[2])
-        await bot.send_message(message.channel, str(rezultat))
-    elif "^" in message.content:
-        msj = message.content.split()
-        rezultat = int(msj[0]) ** int(msj[2])
-        await bot.send_message(message.channel, str(rezultat))'''
     global splituit
     global rezultat
     splituit = message.content.split()
