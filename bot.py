@@ -51,7 +51,7 @@ async def on_message(message):
     await bot.process_commands(message)
 
 @bot.command(pass_context=True)
-async def search(ctx, text):
+async def search(ctx, *, text):
     src = google.search(text)
     i=0
     for url in src:
