@@ -56,7 +56,7 @@ async def search(ctx, text):
     i=0
     for url in src:
         i+=1
-        if i<=4:
+        if i>4:
             break
         await bot.send_message(ctx.message.channel, url)
 
