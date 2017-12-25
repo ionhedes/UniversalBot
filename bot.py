@@ -16,21 +16,38 @@ async def on_ready():
         print('\n')
 
 
+
 @bot.command(pass_context=True)
 async def mseg(ctx, id, msj):
-    await bot.send_message(await bot.get_user_info(id), msj)
+    if ctx.message.channel.id == '190836493399359488' or ctx.message.channel.id == '394560963510140939':
+        await bot.send_message(await bot.get_user_info(id), msj)
 
 rezultat = 0
 nextOper =""
 splituit = []
+
+@bot.command(pass_context=True)
+async def join(ctx):
+    if ctx.message.channel.id == '190836493399359488' or ctx.message.channel.id == '394560963510140939':
+        for ch in bot.get_all_channels():
+            for usr in ch.voice_members:
+                if usr.id == ctx.message.author.id:
+                    await bot.join_voice_channel(ch)
+
+@bot.command(pass_context=True)
+async def disc(ctx):
+    if ctx.message.channel.id == '190836493399359488' or ctx.message.channel.id == '394560963510140939':
+        for cl in bot.voice_clients:
+            if (cl.server == ctx.message.server):
+                await cl.disconnect()
 
 @bot.event
 async def on_message(message):
     global splituit
     global rezultat
     global expresie
-    j=0
-    if message.content[0] != "%" and message.author.id != bot.user.id:
+
+    if message.content[0] != "%" and message.author.id != bot.user.id and (message.channel.id == '190836493399359488' or message.channel.id == '394560963510140939'):
         expresie = message.content
         index = re.search("\d", expresie)
         expresie = expresie [index.start(): len(expresie)]
@@ -58,13 +75,16 @@ async def on_message(message):
 
 @bot.command(pass_context=True)
 async def search(ctx, *, text):
-    src = google.search(text)
-    i=0
-    for url in src:
-        i+=1
-        if i>4:
-            break
-        await bot.send_message(ctx.message.channel, url)
-
+    if ctx.message.channel.id == '190836493399359488' or ctx.message.channel.id == '394560963510140939':
+        src = google.search(text)
+        i=0
+        for url in src:
+            i+=1
+            if i>4:
+                break
+            await bot.send_message(ctx.message.channel, url)
 
 bot.run("Mzk0NTU0MzA3ODQxNjIyMDI2.DSGA2Q.zWEtGR_ORdLsELiNp60p94GCJQk")
+
+
+
