@@ -2,6 +2,7 @@ import discord
 from discord.ext import commands
 import google
 import random
+import re
 
 bot = commands.Bot(command_prefix = '%', description = "Bot for everything!")
 
@@ -27,8 +28,13 @@ splituit = []
 async def on_message(message):
     global splituit
     global rezultat
+    global expresie
+    j=0
     if message.content[0] != "%" and message.author.id != bot.user.id:
-        splituit = message.content.split()
+        expresie = message.content
+        index = re.search("\d", expresie)
+        expresie = expresie [index.start(): len(expresie)]
+        splituit = expresie.split()
         rezultat = int(splituit[0])
         splituit.remove(splituit[0])
         for elem in splituit:
