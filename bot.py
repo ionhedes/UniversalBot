@@ -3,9 +3,11 @@ from discord.ext import commands
 import google
 import random
 import re
+from ctypes.util import find_library
+import youtube_dl
 
 bot = commands.Bot(command_prefix = '%', description = "Bot for everything!")
-
+opus = discord.opus.load_opus(find_library("opus"))
 @bot.event
 async def on_ready():
     print("on_ready fired. You are in debug mode.")
@@ -29,10 +31,33 @@ splituit = []
 @bot.command(pass_context=True)
 async def join(ctx):
     if ctx.message.channel.id == '190836493399359488' or ctx.message.channel.id == '394560963510140939':
+        global voice
         for ch in bot.get_all_channels():
             for usr in ch.voice_members:
                 if usr.id == ctx.message.author.id:
-                    await bot.join_voice_channel(ch)
+                    voice = await bot.join_voice_channel(ch)
+
+@bot.command(pass_context=True)
+async def play(ctx, link):
+    if ctx.message.channel.id == '180043394343632906' or ctx.message.channel.id == '394560963510140939':
+        global player
+        player = await voice.create_ytdl_player(link)
+        player.start()
+
+@bot.command(pass_context=True)
+async def pause(ctx):
+    if ctx.message.channel.id == '180043394343632906' or ctx.message.channel.id == '394560963510140939':
+        player.pause()
+
+@bot.command(pass_context=True)
+async def resume(ctx):
+    if ctx.message.channel.id == '180043394343632906' or ctx.message.channel.id == '394560963510140939':
+        player.resume()
+
+@bot.command(pass_context=True)
+async def stop(ctx):
+    if ctx.message.channel.id == '180043394343632906' or ctx.message.channel.id == '394560963510140939':
+        player.stop()
 
 @bot.command(pass_context=True)
 async def disc(ctx):
