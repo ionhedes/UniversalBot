@@ -133,6 +133,12 @@ async def search(ctx, *, text):
                 break
             await bot.send_message(ctx.message.channel, url)
 
+@bot.command(pass_context=True)
+async def shutdown(ctx):
+    if ctx.message.channel.id in bindToTxt:
+        await bot.close()
+
+
 if token == "YourToken":
     print("Bot login token is invalid. You need to go into config.ini and change the token under Login to your bot's token. Exiting in 5 seconds.")
     time.sleep(5)
