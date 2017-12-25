@@ -1,15 +1,16 @@
 import discord
 from discord.ext import commands
 import google
-import random
 import re
 from ctypes.util import find_library
-import youtube_dl
 import configparser
 import os.path
 from shutil import copyfile
 import time
 import sys
+import validators
+import urllib.request
+import urllib.parse
 
 config = configparser.ConfigParser()
 if os.path.isfile("config.ini"):
@@ -44,8 +45,6 @@ async def on_ready():
         print('\t[' + str(sv.id) + '] ' + str(sv.name))
         print('\n')
 
-
-
 @bot.command(pass_context=True)
 async def mseg(ctx, id, msj):
     if ctx.message.channel.id in bindToTxt:
@@ -68,8 +67,17 @@ async def join(ctx):
 async def play(ctx, link):
     if ctx.message.channel.id in bindToMusic:
         global player
-        player = await voice.create_ytdl_player(link)
-        player.start()
+        if validators.url(link):
+            player = await voice.create_ytdl_player(link)
+            player.start()
+        elif not validators.url(link):
+            cautare = urllib.parse.urlencode({"search_query" : link})
+            rezultate_cautare = urllib.request.urlopen("http://www.youtube.com/results?" + cautare)
+            nume_videouri = re.findall(r'href=\"\/watch\?v=(.{11})', rezultate_cautare.read().decode())
+            link = nume_videouri[0]
+            player = await voice.create_ytdl_player(link)
+            player.start()
+
 
 @bot.command(pass_context=True)
 async def pause(ctx):
